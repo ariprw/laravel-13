@@ -1,0 +1,1 @@
+@include('layouts.errors', ['title' => 'Sesi Telah Kedaluwarsa'])

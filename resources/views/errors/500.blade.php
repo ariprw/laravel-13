@@ -1,0 +1,1 @@
+@include('layouts.errors', ['title' => 'Situs Sedang Maintenance'])

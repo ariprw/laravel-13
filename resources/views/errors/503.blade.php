@@ -1,0 +1,1 @@
+@include('layouts.errors', ['title' => 'Maaf situs sedang maintenance, mohon tunggu beberapa saat'])
