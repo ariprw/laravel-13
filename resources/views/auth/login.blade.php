@@ -30,7 +30,7 @@
         </div>
 
         <div class="flex justify-end">
-            <a class="text-sm text-lime-700 hover:text-black select-none" href="{{ route('forgot') }}">Lupa password?</a>
+            <a class="text-sm text-indigo-700 hover:text-black select-none" href="{{ route('forgot') }}">Lupa password?</a>
         </div>
 
         <div class="my-9">
@@ -42,7 +42,7 @@
     <div class="text-center">
         <p class="text-sm text-slate-500">
             Belum punya akun?
-            <a class="font-medium text-lime-700 hover:text-black" href="{{ route('register') }}">Daftar</a>
+            <a class="font-medium text-indigo-700 hover:text-black" href="{{ route('register') }}">Daftar</a>
         </p>
     </div>
     

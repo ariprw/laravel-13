@@ -32,7 +32,7 @@
     <div class="text-center">
         <p class="text-sm text-slate-500">
             Belum menerima email verifikasi?
-            <a class="font-medium text-lime-700 hover:text-black" href="{{ route('resend.verification') }}">Kirim ulang</a>
+            <a class="font-medium text-indigo-700 hover:text-black" href="{{ route('resend.verification') }}">Kirim ulang</a>
         </p>
     </div>
     

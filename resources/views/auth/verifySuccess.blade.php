@@ -15,7 +15,7 @@
     <div class="text-center mt-9">
         <p class="text-sm text-slate-500">
             Sudah punya akun?
-            <a class="font-medium text-lime-700 hover:text-black" href="{{ route('login') }}">Login</a>
+            <a class="font-medium text-indigo-700 hover:text-black" href="{{ route('login') }}">Login</a>
         </p>
     </div>
 

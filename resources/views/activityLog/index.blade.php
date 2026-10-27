@@ -62,7 +62,7 @@
                         @case(1)
                             <span class="col-span-6">
                                 <div>{{ $item->created_at->format('d F Y H:i:s') }}</div>
-                                <div class="font-medium text-xs text-lime-700 italic">{{ $item->user?->name ?? $item->user_id }}</div>
+                                <div class="font-medium text-xs text-indigo-700 italic">{{ $item->user?->name ?? $item->user_id }}</div>
                                 <div class="font-medium text-xs text-gray-500 italic">{{ $item->user?->branches?->name ?? '' }}</div>
                             </span>
                             @break

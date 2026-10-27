@@ -5,7 +5,7 @@
 
 @php
 $variants = [
-    'primary' => 'text-lime-700 hover:text-black',
+    'primary' => 'text-indigo-700 hover:text-black',
     'danger' => 'text-red-600 hover:text-black',
 ];
 @endphp

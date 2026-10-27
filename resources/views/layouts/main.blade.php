@@ -23,12 +23,12 @@
 
             @if (Route::has('login'))
                 <div class="listMenu hidden lg:flex items-center justify-between gap-4 select-none duration-200 ease-in-out">
-                        <a class="block m-3 {{ request()->routeIs('home') ? 'text-lime-700' : 'text-black' }} hover:text-lime-700" href="{{ route('home') }}">Beranda</a>
+                        <a class="block m-3 {{ request()->routeIs('home') ? 'text-indigo-700' : 'text-black' }} hover:text-indigo-700" href="{{ route('home') }}">Beranda</a>
                     @auth
-                        <a class="block m-3 {{ request()->routeIs('dashboard') ? 'text-lime-700' : 'text-black' }} hover:text-lime-700" href="{{ route('dashboard') }}">Dashboard</a>
+                        <a class="block m-3 {{ request()->routeIs('dashboard') ? 'text-indigo-700' : 'text-black' }} hover:text-indigo-700" href="{{ route('dashboard') }}">Dashboard</a>
                     @else
-                        <a class="block m-3 {{ request()->routeIs('login') ? 'text-lime-700' : 'text-black' }} hover:text-lime-700" href="{{ route('login') }}">Login</a>
-                        <a class="block m-3 {{ request()->routeIs('register') ? 'text-lime-700' : 'text-black' }} hover:text-lime-700" href="{{ route('register') }}">Register</a>
+                        <a class="block m-3 {{ request()->routeIs('login') ? 'text-indigo-700' : 'text-black' }} hover:text-indigo-700" href="{{ route('login') }}">Login</a>
+                        <a class="block m-3 {{ request()->routeIs('register') ? 'text-indigo-700' : 'text-black' }} hover:text-indigo-700" href="{{ route('register') }}">Register</a>
                     @endauth
                 </div>
             @endif
