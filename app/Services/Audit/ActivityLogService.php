@@ -3,9 +3,9 @@
 namespace App\Services\Audit;
 
 use App\Models\ActivityLog;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ActivityLogService
 {
@@ -25,6 +25,14 @@ class ActivityLogService
         ?Model $subject = null,
         array $properties = [],
     ): ActivityLog {
+        $properties['activity'] = array_merge(
+            $properties['activity'] ?? [],
+            [
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ],
+        );
+        
         return ActivityLog::create([
             'user_id' => Auth::id(),
             'log_name' => $logName ?? $subject?->getTable(),

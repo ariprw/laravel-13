@@ -4,6 +4,8 @@ namespace App\Services\Auth;
 
 use App\Models\User;
 use App\Services\Audit\ActivityLogService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -95,7 +97,7 @@ class AuthService
         }
     }
 
-    public function forgot(array $data) : ?User
+    public function forgot(array $data): ?User
     {
         $fields = ['name', 'email', 'email_verified_at', 'status'];
 
@@ -123,7 +125,7 @@ class AuthService
         return $user;
     }
 
-    public function reset(array $data) : ?User
+    public function reset(array $data): ?User
     {
         $fields = ['name', 'email', 'email_verified_at', 'status'];
 
@@ -163,7 +165,7 @@ class AuthService
         return $resetUser;
     }
 
-    public function login(array $data) : ?User
+    public function login(array $data): ?User
     {
         $fields = ['name', 'email', 'status'];
 
@@ -194,5 +196,27 @@ class AuthService
         );
 
         return $user;
+    }
+
+    public function logout(Request $request): void
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            $fields = ['name', 'email', 'status'];
+
+            $this->activityLogService->record(
+                description: 'Logout success',
+                subject: $user,
+                properties: [
+                    'old' => $user->only($fields),
+                ],
+            );
+        }
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
     }
 }

@@ -53,16 +53,35 @@
     @foreach($activityLog->properties as $keys => $items)
         <x-show.card>
             <x-slot:title>
-                Data
-                {{ ($keys == 'new') ? 'Sesudah' : '' }}
-                {{ ($keys == 'old') ? 'Sebelum' : '' }}
+                @switch($keys)
+                    @case('old')
+                        Data Sebelum
+                        @break
+
+                    @case('new')
+                        Data Sesudah
+                        @break
+
+                    @case('activity')
+                        Informasi Tambahan
+                        @break
+
+                    @default
+                        {{ str($keys)->replace('_', ' ')->title() }}
+                @endswitch
             </x-slot:title>
 
-            @foreach($items as $key => $item)
-                <x-show.row label="{{ $key }}" class="{{ $loop->last ? 'border-b-none' : '' }}">
-                    {{ $item }}
+            @if(is_array($items))
+                @foreach($items as $key => $item)
+                    <x-show.row label="{{ $key }}" class="{{ $loop->last ? 'border-b-none' : '' }}">
+                        {{ is_scalar($item) ? $item : json_encode($item) }}
+                    </x-show.row>
+                @endforeach
+            @else
+                <x-show.row label="{{ $keys }}" class="{{ $loop->last ? 'border-b-none' : '' }}">
+                    {{ $items }}
                 </x-show.row>
-            @endforeach
+            @endif
         </x-show.card>
     @endforeach
 

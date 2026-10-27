@@ -139,13 +139,13 @@ class AuthController extends Controller
         $this->authorize('login', Auth::class);
 
         $user = $this->authService->login(
-            $request->validated()
+            $request->validated(),
         );
 
         if (! $user) {
             return back()->withErrors([
                 'email' => 'Email atau password salah',
-            ])->withInput();
+            ])->withInput($request->only('email'));
         }
 
         auth()->login($user);
@@ -157,10 +157,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        auth()->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $this->authService->logout($request);
 
         return redirect()->route('login');
     }
