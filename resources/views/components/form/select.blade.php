@@ -58,7 +58,7 @@
             @if ($id) id="{{ $id }}" @endif
             name="{{ $name }}"
             @required($required)
-            {{ $attributes->except('class')->merge(['class' => '']) }}
+            {{ $attributes->merge(['class' => '']) }}
         >
             <option
                 value=""

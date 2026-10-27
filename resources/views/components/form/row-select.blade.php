@@ -26,7 +26,7 @@
                 @if ($id) id="{{ $id }}" @endif
                 name="{{ $name }}"
                 @required($required)
-                {{ $attributes->except('class')->merge([
+                {{ $attributes->merge([
                     'class' => '',
                 ]) }}
             >

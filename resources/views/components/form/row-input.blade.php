@@ -27,7 +27,7 @@
             @if ($type !== 'password')
                 value="{{ old($name, $value) }}"
             @endif
-            {{ $attributes->except('class')->merge([
+            {{ $attributes->merge([
                 'class' => 'w-full rounded-xl border border-solid border-slate-300 focus:border-indigo-600 px-4 py-2.5 text-sm text-slate-900 outline-none',
             ]) }}
         >
