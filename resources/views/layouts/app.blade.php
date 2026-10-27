@@ -220,8 +220,8 @@ $menus = $menu[$role] ?? $menu['default'];
         content.classList.toggle('hidden');
     });
 
-    sidebarSearch?.addEventListener('input', function () {
-        const keyword = this.value.toLowerCase().trim();
+    sidebarSearch?.addEventListener('input', () => {
+        const keyword = sidebarSearch.value.toLowerCase().trim();
         const items = sidebarMenu.querySelectorAll('.sidebarMenuItem');
         const dividers = sidebarMenu.querySelectorAll('.sidebarDivider');
 
