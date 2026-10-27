@@ -1,6 +1,6 @@
 @props([
     'label',
-    'name',
+    'name' => null,
     'id' => null,
     'type' => 'text',
     'required' => false,
@@ -12,12 +12,12 @@
 <div>
     <input
         @if ($id) id="{{ $id }}" @endif
-        name="{{ $name }}"
+        @if (filled($name)) name="{{ $name }}" @endif
         type="{{ $type }}"
         maxlength="{{ $maxlength }}"
         @required($required)
         @if ($type !== 'password')
-        value="{{ old($name, $value) }}"
+            value="{{ filled($name) ? old($name, $value) : $value }}"
         @endif
         @if ($placeholder) placeholder="{{ $placeholder }}" @endif
         {{ $attributes->merge([
@@ -25,7 +25,9 @@
         ]) }}
     >
 
-    @error($name)
-        <p class="mt-1 text-xs lg:text-sm text-red-600 italic">{{ $message }}</p>
-    @enderror
+    @if (filled($name))
+        @error($name)
+            <p class="mt-1 text-xs lg:text-sm text-red-600 italic">{{ $message }}</p>
+        @enderror
+    @endif
 </div>
