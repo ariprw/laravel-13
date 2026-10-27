@@ -114,7 +114,7 @@ if (!function_exists('ic')) {
                 const searchInput = document.createElement("input");
                 searchInput.setAttribute("type", "text");
                 searchInput.setAttribute("placeholder", "Cari..");
-                searchInput.setAttribute("class", "selectSearch block '.$inputBgColor.' border border-solid '.$borderColor.' focus:border-lime-600 rounded-xl p-2 text-sm w-full outline-none");
+                searchInput.setAttribute("class", "selectSearch block '.$inputBgColor.' border border-solid '.$borderColor.' focus:border-indigo-600 rounded-xl p-2 text-sm w-full outline-none");
 
                 if (optionsLength <= minListOption) {
                     itemsDivSearch.classList.add("hidden");
