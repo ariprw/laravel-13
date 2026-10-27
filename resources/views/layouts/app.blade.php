@@ -145,18 +145,28 @@ $menus = $menu[$role] ?? $menu['default'];
                 <div class="text-xs italic">{{ $name }}</div>
             </div>
 
-            <div class="mt-6">
+            <div class="mt-6 relative">
+                <x-form.input class="sidebarSearch pr-11" type="search" placeholder="Cari" autocomplete="off"></x-form.input>
+
+                <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none text-center">
+                    <span class="sidebarSearchShortcut text-xs text-slate-400">Ctrl K</span>
+                </div>
+            </div>
+
+            <div class="sidebarMenu mt-3">
                 @foreach ($menus as $item)
                     @if (($item['type'] ?? null) === 'divider')
-                        <div class="my-3 border-b border-b-solid border-gray-200"></div>
+                        <div class="sidebarDivider my-3 border-b border-b-solid border-gray-200"></div>
                     @else
-                        <a href="{{ route($item['route']) }}" class="flex items-center gap-3 my-1 px-3 py-2 rounded-xl {{ request()->routeIs($item['route']) ? 'bg-slate-100' : '' }} hover:bg-slate-100 text-sm">
+                        <a href="{{ route($item['route']) }}" class="sidebarMenuItem flex items-center gap-3 my-1 px-3 py-2 rounded-xl {{ request()->routeIs($item['route']) ? 'bg-slate-100' : '' }} hover:bg-slate-100 text-sm">
                             {!! ic($item['icon'], 'w-5 h-5 shrink-0') !!}
 
                             <span>{{ $item['label'] }}</span>
                         </a>
                     @endif
                 @endforeach
+
+                <div class="sidebarNoResults hidden text-sm text-slate-400 italic">Tidak ditemukan</div>
             </div>
         </div>
     </div>
@@ -189,6 +199,10 @@ $menus = $menu[$role] ?? $menu['default'];
 <script>
     const menuButton = document.querySelector('.menuButton');
     const sidebar = document.querySelector('.sidebar');
+    const sidebarSearch = document.querySelector('.sidebarSearch');
+    const sidebarSearchShortcut = document.querySelector('.sidebarSearchShortcut');
+    const sidebarMenu = document.querySelector('.sidebarMenu');
+    const sidebarNoResults = document.querySelector('.sidebarNoResults');
     const content = document.querySelector('.content');
 
     menuButton?.addEventListener('click', () => {
@@ -204,6 +218,50 @@ $menus = $menu[$role] ?? $menu['default'];
 
         sidebar.classList.toggle('hidden');
         content.classList.toggle('hidden');
+    });
+
+    sidebarSearch?.addEventListener('input', function () {
+        const keyword = this.value.toLowerCase().trim();
+        const items = sidebarMenu.querySelectorAll('.sidebarMenuItem');
+        const dividers = sidebarMenu.querySelectorAll('.sidebarDivider');
+
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            const label = item.innerText.toLowerCase().trim() || '';
+            const match = label.includes(keyword);
+
+            item.classList.toggle('hidden', !match);
+
+            if (match) {
+                visibleCount++;
+            }
+        });
+
+        dividers.forEach(divider => {
+            divider.classList.toggle('hidden', keyword !== '');
+        });
+
+        sidebarNoResults?.classList.toggle('hidden', visibleCount > 0);
+    });
+
+    sidebarSearch?.addEventListener('focus', () => {
+        sidebarSearchShortcut.innerText = 'Esc';
+    });
+
+    sidebarSearch?.addEventListener('blur', () => {
+        sidebarSearchShortcut.innerText = 'Ctrl K';
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            sidebarSearch?.focus();
+        }
+
+        if (e.key === 'Escape' && document.activeElement === sidebarSearch) {
+            sidebarSearch.blur();
+        }
     });
 </script>
 </body>
