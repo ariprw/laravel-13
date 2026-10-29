@@ -64,7 +64,8 @@
     </x-show.actions>
 </form>
 
-{!! customSelect().formSubmitJs() !!}
+{!! customSelect() !!}
+<x-form.submit/>
 <script>
     const branchSelect = document.querySelector('.customSelect select[name="branch"]');
     let branchSelectLabel = branchSelect?.firstElementChild?.innerText?.trim() ?? '';

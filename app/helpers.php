@@ -1,6 +1,7 @@
 <?php
 if (!function_exists('ic')) {
-    function ic($name='', $class='') {
+    function ic($name='', $class='')
+    {
         $icons = [
             'logo' => '',
             'house' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
@@ -33,25 +34,9 @@ if (!function_exists('ic')) {
 
         return $svg;
     }
-
-    function formSubmitJs(): string {
-        return <<<'HTML'
-        <script>
-        document.querySelectorAll('.formSubmit').forEach(form => {
-            form.addEventListener('submit', function () {
-                const button = this.querySelector('[type="submit"]');
-
-                if (!button) return;
-
-                button.disabled = true;
-                button.classList.add('opacity-50', 'cursor-not-allowed');
-            });
-        });
-        </script>
-        HTML;
-    }
     
-    function customSelect($data=[]) {
+    function customSelect($data=[])
+    {
         $dark = isset($data['dark']) ? (($data['dark'] === true) ? true : false) : false;
         $bgColor = 'bg-white';
         $textColor = 'text-black';
@@ -263,16 +248,15 @@ if (!function_exists('ic')) {
         lastTypedCustomSelect = null;
         </script>';
     }
-    
-    function ribuan($ribuan) {
+
+    function ribuan($ribuan)
+    {
         $ribuan = preg_replace('/[^-0-9]+/', '', $ribuan);
 
         if (empty($ribuan)) {
-            $hasil = '0';
-        } else {
-            $hasil = number_format($ribuan, 0, ',', '.');
+            return '0';
         }
-        
-        return $hasil;
+
+        return number_format($ribuan, 0, ',', '.');
     }
 }

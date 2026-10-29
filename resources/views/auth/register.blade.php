@@ -48,6 +48,6 @@
         </p>
     </div>
 
-    {!! formSubmitJs() !!}
+    <x-form.submit/>
 
 @endsection

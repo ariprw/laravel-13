@@ -37,6 +37,7 @@
     </x-show.actions>
 </form>
 
-{!! customSelect().formSubmitJs() !!}
+{!! customSelect() !!}
+<x-form.submit/>
 
 @endsection

@@ -34,6 +34,6 @@
     </x-show.actions>
 </form>
 
-{!! formSubmitJs() !!}
+<x-form.submit/>
 
 @endsection

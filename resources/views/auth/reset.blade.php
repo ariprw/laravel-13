@@ -37,6 +37,6 @@
         </div>
     </form>
 
-    {!! formSubmitJs() !!}
+    <x-form.submit/>
 
 @endsection
