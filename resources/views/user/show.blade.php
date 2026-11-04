@@ -14,6 +14,10 @@
             {{ $user->name }}
         </x-show.row>
 
+        <x-show.row label="Jenis Kelamin">
+            {{ collect($gender)->firstWhere('value', $user->gender)['label'] ?? '' }}
+        </x-show.row>
+
         <x-show.row label="Email" class="border-b-none">
             {{ $user->email }}
         </x-show.row>
@@ -24,6 +28,10 @@
         <x-slot:title>
             Akun
         </x-slot:title>
+
+        <x-show.row label="ID">
+            {{ $user->id }}
+        </x-show.row>
         
         <x-show.row label="Email Diverifikasi">
             @if ($user->email_verified_at)
@@ -34,11 +42,11 @@
         </x-show.row>
 
         <x-show.row label="Status">
-            {{ ucwords($user->status) }}
+            {{ collect($status)->firstWhere('value', $user->status)['label'] ?? '' }}
         </x-show.row>
 
         <x-show.row label="Role">
-            {{ ucwords($user->role) }}
+            {{ collect($role)->firstWhere('value', $user->role)['label'] ?? '' }}
         </x-show.row>
 
         <x-show.row label="Cabang">

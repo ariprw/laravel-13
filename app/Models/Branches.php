@@ -4,36 +4,36 @@ namespace App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Branches extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes;
 
     protected $table = 'branches';
 
     protected $fillable = [
         'name',
-        'is_active',
+        'phone',
+        'email',
+        'address',
+        'maps',
+        'logo',
+        'status',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_active' => 'boolean',
-        ];
-    }
 
     public function scopeFilter($query, array $filters)
     {
         $query->when(isset($filters['status']) && $filters['status'] !== '', function ($query) use ($filters) {
-            $query->where('is_active', $filters['status']);
+            $query->where('status', $filters['status']);
         });
 
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%");
+                $query->where('id', $search)
+                ->orWhere('name', 'like', "%{$search}%");
             });
         });
 

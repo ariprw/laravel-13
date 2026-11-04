@@ -4,8 +4,8 @@ namespace App\Enums\Branches;
 
 enum Status: string 
 {
-    case AKTIF = '1';
-    case NONAKTIF = '0';
+    case ACTIVE = 'active';
+    case INACTIVE = 'inactive';
 
     public static function values(): array
     {
@@ -15,8 +15,8 @@ enum Status: string
     public function label(): string
     {
         return match ($this) {
-            self::AKTIF => 'Aktif',
-            self::NONAKTIF => 'Nonaktif',
+            self::ACTIVE => 'Aktif',
+            self::INACTIVE => 'Nonaktif',
         };
     }
 

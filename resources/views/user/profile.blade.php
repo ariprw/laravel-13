@@ -17,6 +17,15 @@
         <div class="grid gap-4">
             <x-form.row-input label="Nama Lengkap *" type="text" name="name" value="{{old('name', $user->name)}}" required />
 
+            <x-form.row-select
+                label="Jenis Kelamin *"
+                name="gender"
+                :options="$gender"
+                :value="$user->gender"
+                placeholder="-- Pilih --"
+                required
+            />
+
             <x-form.row-read-only label="Email">{{ $user->email }}</x-form.row-read-only>
 
             <x-form.row-read-only label="Role">{{ $user->role }}</x-form.row-read-only>
@@ -34,6 +43,7 @@
     </x-show.actions>
 </form>
 
-<x-form.submit/>
+<x-js.submit/>
+<x-js.custom-select/>
 
 @endsection

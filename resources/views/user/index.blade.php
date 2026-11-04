@@ -24,6 +24,12 @@
                 <div>
                     <x-link-button href="{{ route('user.index') }}">Kembali</x-link-button>
                 </div>
+            @else
+                <div>
+                    @can('export', App\Models\User::class)
+                        <x-link-button href="{{ route('user.export') }}" variant="primary">Export</x-link-button>
+                    @endcan
+                </div>
             @endif
         </div>
 
@@ -101,14 +107,14 @@
 
                         @case(3)
                             <span class="col-span-6">
-                                {{ ucfirst($item->status) }}
+                                {{ collect($status)->firstWhere('value', $item->status)['label'] ?? '' }}
                             </span>
                             @break
 
                         @case(4)
                             <span class="col-span-6">
                                 <div>
-                                    <div class="inline-block bg-slate-900 text-white text-xs italic px-2 rounded-xl">{{ ucfirst($item->role) }}</div>
+                                    <div class="inline-block bg-slate-900 text-white text-xs italic px-2 rounded-xl">{{ collect($role)->firstWhere('value', $item->role)['label'] ?? '' }}</div>
                                 </div>
 
                                 @if ($item->branches)
@@ -121,17 +127,16 @@
 
                         @case(5)
                             <span class="col-span-6">
+                                @can('view', $item)
+                                    <x-show.option :detail="route('user.show', $item->id)" />
+                                @endcan
+
+                                @can('update', $item)
+                                    <x-show.option :edit="route('user.edit', $item->id)" />
+                                @endcan
+
                                 @can('delete', $item)
-                                    <x-show.option
-                                        :detail="route('user.show', $item->id)"
-                                        :edit="route('user.edit', $item->id)"
-                                        :delete="route('user.delete', $item->id)"
-                                    />
-                                @else
-                                    <x-show.option
-                                        :detail="route('user.show', $item->id)"
-                                        :edit="route('user.edit', $item->id)"
-                                    />
+                                    <x-show.option :delete="route('user.delete', $item->id)" />
                                 @endcan
                             </span>
                             @break
@@ -146,6 +151,6 @@
     <x-show.pagination :data="$user" />
 </x-show.card>
 
-{!! customSelect() !!}
+<x-js.custom-select/>
 
 @endsection

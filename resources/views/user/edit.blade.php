@@ -28,6 +28,15 @@
             </x-form.row-read-only>
 
             <x-form.row-select
+                label="Jenis Kelamin *"
+                name="gender"
+                :options="$gender"
+                :value="$user->gender"
+                placeholder="-- Pilih --"
+                required
+            />
+
+            <x-form.row-select
                 label="Status *"
                 name="status"
                 :options="$status"
@@ -64,8 +73,8 @@
     </x-show.actions>
 </form>
 
-{!! customSelect() !!}
-<x-form.submit/>
+<x-js.submit/>
+<x-js.custom-select/>
 <script>
     const branchSelect = document.querySelector('.customSelect select[name="branch"]');
     let branchSelectLabel = branchSelect?.firstElementChild?.innerText?.trim() ?? '';

@@ -6,18 +6,18 @@
 
 @if ($detail)
     <x-link-option href="{{ $detail }}">
-        {!! ic('info', 'w-5 h-5') !!}
+        <i data-lucide="info" class="w-5 h-5"></i>
     </x-link-option>
 @endif
 
 @if ($edit)
     <x-link-option href="{{ $edit }}">
-        {!! ic('edit', 'w-5 h-5') !!}
+        <i data-lucide="edit" class="w-5 h-5"></i>
     </x-link-option>
 @endif
 
 @if ($delete)
     <x-link-option href="{{ $delete }}">
-        {!! ic('delete', 'w-5 h-5') !!}
+        <i data-lucide="trash" class="w-5 h-5"></i>
     </x-link-option>
 @endif

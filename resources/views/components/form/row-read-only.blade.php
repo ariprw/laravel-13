@@ -1,9 +1,22 @@
+@props([
+    'label',
+    'sublabel' => null,
+])
+
 <div {{ $attributes->class([
     'grid grid-cols-10 gap-4 items-start',
     'lg:items-center',
 ]) }}>
-    <div class="col-span-3 text-xs lg:text-sm font-bold">
-        {{ $label }}
+    <div class="col-span-3">
+        <div class="text-xs lg:text-sm font-bold">
+            {{ $label }}
+        </div>
+
+        @if($sublabel)
+            <div class="text-xs text-gray-500">
+                {{ $sublabel }}
+            </div>
+        @endif
     </div>
     
     <div class="col-span-7">

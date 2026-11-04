@@ -6,6 +6,16 @@
 
 <div class="grid gap-6">
     <x-show.card>
+        @if ($branches->logo)
+            <x-show.row-img
+                label="Logo"
+                sublabel="Klik gambar untuk memperbesar"
+                href="{{ asset($branches->logo) }}"
+                src="{{ asset($branches->logo) }}"
+                target="_blank"
+            />
+        @endif
+        
         <x-show.row label="ID">
             {{ $branches->id }}
         </x-show.row>
@@ -14,8 +24,24 @@
             {{ $branches->name }}
         </x-show.row>
 
+        <x-show.row label="Ponsel">
+            {{ $branches->phone }}
+        </x-show.row>
+
+        <x-show.row label="Email">
+            {{ $branches->email }}
+        </x-show.row>
+
+        <x-show.row label="Alamat">
+            {{ $branches->address }}
+        </x-show.row>
+
+        <x-show.row label="Maps">
+            {{ $branches->maps }}
+        </x-show.row>
+
         <x-show.row label="Status">
-            {{ collect($status)->firstWhere('value', $branches->is_active)['label'] ?? '' }}
+            {{ collect($status)->firstWhere('value', $branches->status)['label'] ?? '' }}
         </x-show.row>
 
         <x-show.row label="Dibuat">

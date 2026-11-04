@@ -3,18 +3,17 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'user'], true);
     }
 
     public function view(User $user, User $model): bool
     {
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'user'], true);
     }
 
     public function create(User $user): bool
@@ -45,5 +44,10 @@ class UserPolicy
     public function forceDelete(User $user, User $model): bool
     {
         return false;
+    }
+    
+    public function export(User $user): bool
+    {
+        return $user->role === 'admin';
     }
 }

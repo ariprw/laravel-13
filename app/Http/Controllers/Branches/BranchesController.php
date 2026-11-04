@@ -8,6 +8,7 @@ use App\Http\Requests\Branches\UpdateRequest;
 use App\Http\Requests\Branches\DeleteRequest;
 use App\Models\Branches;
 use App\Services\Branches\BranchesService;
+use App\Services\Upload\PhotoService;
 use App\Enums\Branches\Status;
 use App\Enums\Delete;
 use Illuminate\Http\Request;
@@ -16,9 +17,10 @@ use Illuminate\Support\Str;
 class BranchesController extends Controller
 {
     public function __construct(
-        protected BranchesService $branchesService
+        protected BranchesService $branchesService,
+        protected PhotoService $photoService,
     ) {
-        $this->title = 'Cabang';
+        $this->title = $this->branchesService->title;
     }
 
     public function index()
@@ -26,7 +28,7 @@ class BranchesController extends Controller
         $this->authorize('viewAny', Branches::class);
 
         $branches = $this->branchesService->paginate();
-        $title = 'Daftar '.$this->title;
+        $title = $this->title;
 
         if (request()->hasAny(['search', 'status'])) {
             $title = 'Pencarian '.$this->title.' : '.Str::limit(request('search', ''), 50);
@@ -53,9 +55,20 @@ class BranchesController extends Controller
     {
         $this->authorize('create', Branches::class);
 
-        $this->branchesService->create(
-            $request->validated()
-        );
+        $data = $request->validated();
+        $logo = null;
+
+        if ($request->hasFile('logo')) {
+            $logo = $this->photoService->upload(
+                $request->file('logo'),
+                'branches',
+                1000
+            );
+        }
+
+        $data['logo'] = $logo;
+
+        $this->branchesService->create($data);
 
         return redirect()
             ->route('branches.index')
@@ -90,10 +103,34 @@ class BranchesController extends Controller
     {
         $this->authorize('update', $branches);
 
+        $data = $request->validated();
+        $oldLogo = $branches->logo;
+        $logo = $oldLogo;
+
+        if ($request->boolean('removeLogo')) {
+            $logo = null;
+        }
+
+        if ($request->hasFile('logo')) {
+            $logo = $this->photoService->upload(
+                $request->file('logo'),
+                'branches',
+                1000
+            );
+        }
+        
+        $data['logo'] = $logo;
+
+        unset($data['removeLogo']);
+
         $this->branchesService->update(
             $branches,
-            $request->validated()
+            $data
         );
+
+        if ($oldLogo && $oldLogo !== $logo) {
+            $this->photoService->delete($oldLogo);
+        }
 
         return redirect()
             ->route('branches.index')
@@ -128,9 +165,11 @@ class BranchesController extends Controller
 
     public function search(Request $request)
     {
+        $this->authorize('viewAny', Branches::class);
+        
         $search = trim($request->input('q', ''));
 
-        $query = Branches::query()->select(['id', 'name', 'is_active']);
+        $query = Branches::query()->select(['id', 'name', 'status']);
 
         if ($search !== '') {
             $query->where(function ($query) use ($search) {
@@ -148,8 +187,8 @@ class BranchesController extends Controller
             'data' => $branches->map(fn ($branch) => [
                 'id' => $branch->id,
                 'name' => $branch->name,
-                'status' => (int) $branch->is_active,
-                'statusLabel' => Status::tryFrom((int) $branch->is_active)?->label() ?? '',
+                'status' => $branch->status,
+                'statusLabel' => Status::tryFrom($branch->status)?->label() ?? '',
             ])->values(),
         ]);
     }

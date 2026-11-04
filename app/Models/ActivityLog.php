@@ -31,7 +31,8 @@ class ActivityLog extends Model
     {
         return $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('log_name', 'like', "%{$search}%")
+                $query->where('id', $search)
+                ->orWhere('log_name', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%")
 
                 ->orWhereHas('user', function ($query) use ($search) {

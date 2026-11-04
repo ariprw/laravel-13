@@ -17,6 +17,9 @@ class UpdateRequest extends FormRequest
     {
         $this->merge([
             'name' => ucwords($this->name),
+            'phone' => formatNumber($this->phone),
+            'email' => strtolower($this->email),
+            'address' => ucwords($this->address),
         ]);
     }
 
@@ -30,9 +33,40 @@ class UpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique('branches', 'name')->ignore($this->route('branches')),
             ],
+            'phone' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'email' => [
+                'nullable',
+                'string',
+                'email',
+                'max:255',
+            ],
+            'address' => [
+                'nullable',
+                'string',
+                'max:800',
+            ],
+            'maps' => [
+                'nullable',
+                'string',
+                'max:800',
+            ],
             'status' => [
                 'required',
                 Rule::in(Status::values()),
+            ],
+            'logo' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png',
+                'max:10240',
+            ],
+            'removeLogo' => [
+                'nullable',
+                'boolean',
             ],
         ];
     }

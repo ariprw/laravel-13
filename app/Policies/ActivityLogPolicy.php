@@ -9,12 +9,16 @@ class ActivityLogPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'user'], true);
     }
 
     public function view(User $user, ActivityLog $activityLog): bool
     {
-        return $user->role === 'admin';
+        if ($user->role === 'admin') {
+            return true;
+        }
+
+        return $user->role === 'user' && $user->id === $activityLog->user_id;
     }
 
     public function create(User $user): bool
@@ -30,5 +34,10 @@ class ActivityLogPolicy
     public function delete(User $user, ActivityLog $activityLog): bool
     {
         return false;
+    }
+    
+    public function export(User $user): bool
+    {
+        return in_array($user->role, ['admin', 'user'], true);
     }
 }

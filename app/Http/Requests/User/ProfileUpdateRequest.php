@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\User\Gender;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -15,6 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         $this->merge([
             'name' => ucwords($this->name),
+            'gender' => strtolower($this->gender),
         ]);
     }
 
@@ -26,6 +29,10 @@ class ProfileUpdateRequest extends FormRequest
                 'string',
                 'min:4',
                 'max:255',
+            ],
+            'gender' => [
+                'required',
+                Rule::in(Gender::values()),
             ],
         ];
     }

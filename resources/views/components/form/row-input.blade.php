@@ -1,5 +1,6 @@
 @props([
     'label',
+    'sublabel' => null,
     'name' => null,
     'id' => null,
     'type' => 'text',
@@ -7,14 +8,24 @@
     'maxlength' => 255,
     'value' => null,
     'placeholder' => null,
+    'datasetFormat' => null,
+    'datasetMaxWidth' => null,
 ])
 
 <div {{ $attributes->class([
     'grid grid-cols-10 gap-4 items-start',
     'lg:items-center',
 ]) }}>
-    <div class="col-span-3 text-xs lg:text-sm font-bold">
-        {{ $label }}
+    <div class="col-span-3">
+        <div class="text-xs lg:text-sm font-bold">
+            {{ $label }}
+        </div>
+
+        @if($sublabel)
+            <div class="text-xs text-gray-500">
+                {{ $sublabel }}
+            </div>
+        @endif
     </div>
     
     <div class="col-span-7">
@@ -23,6 +34,8 @@
             @if (filled($name)) name="{{ $name }}" @endif
             type="{{ $type }}"
             maxlength="{{ $maxlength }}"
+            @if ($datasetFormat) data-format="{{ $datasetFormat }}" @endif
+            @if ($datasetMaxWidth) data-max-width="{{ $datasetMaxWidth }}" @endif
             @required($required)
             @if ($type !== 'password')
                 value="{{ filled($name) ? old($name, $value) : $value }}"

@@ -25,7 +25,13 @@
                 </div>
             @else
                 <div>
-                    <x-link-button href="{{ route('branches.create') }}" variant="primary">Buat</x-link-button>
+                    @can('create', App\Models\Branches::class)
+                        <x-link-button href="{{ route('branches.create') }}" variant="primary">Buat</x-link-button>
+                    @endcan
+
+                    @can('export', App\Models\Branches::class)
+                        <x-link-button href="{{ route('branches.export') }}" variant="primary">Export</x-link-button>
+                    @endcan
                 </div>
             @endif
         </div>
@@ -88,29 +94,28 @@
 
                         @case(2)
                             <span class="col-span-6">
-                                {{ ribuan($item->users_count) }}
+                                {{ formatThousands($item->users_count) }}
                             </span>
                             @break
 
                         @case(3)
                             <span class="col-span-6">
-                                {{ collect($status)->firstWhere('value', $item->is_active)['label'] ?? '' }}
+                                {{ collect($status)->firstWhere('value', $item->status)['label'] ?? '' }}
                             </span>
                             @break
 
                         @case(4)
                             <span class="col-span-6">
+                                @can('view', $item)
+                                    <x-show.option :detail="route('branches.show', $item->id)" />
+                                @endcan
+
+                                @can('update', $item)
+                                    <x-show.option :edit="route('branches.edit', $item->id)" />
+                                @endcan
+
                                 @can('delete', $item)
-                                    <x-show.option
-                                        :detail="route('branches.show', $item->id)"
-                                        :edit="route('branches.edit', $item->id)"
-                                        :delete="route('branches.delete', $item->id)"
-                                    />
-                                @else
-                                    <x-show.option
-                                        :detail="route('branches.show', $item->id)"
-                                        :edit="route('branches.edit', $item->id)"
-                                    />
+                                    <x-show.option :delete="route('branches.delete', $item->id)" />
                                 @endcan
                             </span>
                             @break
@@ -125,6 +130,6 @@
     <x-show.pagination :data="$branches" />
 </x-show.card>
 
-{!! customSelect() !!}
+<x-js.custom-select/>
 
 @endsection

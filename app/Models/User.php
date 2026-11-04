@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'gender',
         'status',
         'role',
         'branch_id',
@@ -54,7 +55,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
+                $query->where('id', $search)
+                ->orWhere('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%");
             });
         });

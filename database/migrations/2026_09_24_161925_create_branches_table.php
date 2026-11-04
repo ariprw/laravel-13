@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->boolean('is_active')
-                ->default(true)
-                ->index();
+            $table->string('name')->unique();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->text('address')->nullable();
+            $table->text('maps')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('status')->default('active')->index();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

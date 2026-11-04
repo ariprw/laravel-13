@@ -19,10 +19,11 @@ class AuthService
 
     public function register(array $data): User
     {
-        $fields = ['name', 'email'];
+        $fields = ['name', 'gender', 'email'];
 
         $user = User::create([
             'name' => $data['name'],
+            'gender' => $data['gender'],
             'email' => $data['email'],
             'password' => $this->passwordService->hash($data['password']),
         ]);
@@ -103,7 +104,7 @@ class AuthService
 
         $user = User::where('email', $data['email'])
         ->whereNotNull('email_verified_at')
-        ->where('status', 'aktif')
+        ->where('status', 'active')
         ->first();
 
         if (! $user) {
@@ -165,7 +166,7 @@ class AuthService
         return $resetUser;
     }
 
-    public function login(array $data): ?User
+    public function login(array $data, Request $request): ?User
     {
         $fields = ['name', 'email', 'status'];
 
@@ -179,13 +180,17 @@ class AuthService
             return null;
         }
 
-        if ($user->status !== 'aktif') {
+        if ($user->status !== 'active') {
             return null;
         }
 
         if (! $this->passwordService->check($data['password'], $user->password)) {
             return null;
         }
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
 
         $this->activityLogService->record(
             description: 'Login success',

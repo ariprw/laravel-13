@@ -9,7 +9,7 @@
         Konten
     </x-slot:title>
 
-    <p class="text-slate-600">{{ Str::random(5000) }}</p>
+    <p class="text-slate-600">{{ Str::random(50) }}</p>
 </x-show.card>
 
 @endsection

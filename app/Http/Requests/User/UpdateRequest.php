@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\User\Gender;
 use App\Enums\User\Status;
 use App\Enums\User\Role;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,6 +19,7 @@ class UpdateRequest extends FormRequest
     {
         $this->merge([
             'name' => ucwords($this->name),
+            'gender' => strtolower($this->gender),
             'status' => strtolower($this->status),
             'role' => strtolower($this->role),
         ]);
@@ -31,6 +33,10 @@ class UpdateRequest extends FormRequest
                 'string',
                 'min:4',
                 'max:255',
+            ],
+            'gender' => [
+                'required',
+                Rule::in(Gender::values()),
             ],
             'status' => [
                 'required',

@@ -18,6 +18,17 @@
         </div>
 
         <div class="mb-5">
+            <div class="mb-2 block text-sm font-medium text-slate-700">Jenis Kelamin *</div>
+
+            <x-form.select
+                name="gender"
+                :options="$gender"
+                placeholder="-- Pilih --"
+                required
+            />
+        </div>
+
+        <div class="mb-5">
             <div class="mb-2 block text-sm font-medium text-slate-700">Email *</div>
             
             <x-form.input type="email" name="email" required />
@@ -48,6 +59,7 @@
         </p>
     </div>
 
-    <x-form.submit/>
+    <x-js.submit/>
+    <x-js.custom-select/>
 
 @endsection

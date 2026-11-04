@@ -10,6 +10,7 @@ use App\Http\Requests\User\PasswordUpdateRequest;
 use App\Models\User;
 use App\Models\Branches;
 use App\Services\User\UserService;
+use App\Enums\User\Gender;
 use App\Enums\User\Status;
 use App\Enums\User\Role;
 use App\Enums\Delete;
@@ -20,7 +21,7 @@ class UserController extends Controller
     public function __construct(
         private UserService $userService,
     ) {
-        $this->title = 'User';
+        $this->title = $this->userService->title;
     }
 
     public function index()
@@ -28,7 +29,7 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
 
         $user = $this->userService->paginate();
-        $title = 'Daftar '.$this->title;
+        $title = $this->title;
 
         if (request()->hasAny(['search', 'status', 'role'])) {
             $title = 'Pencarian '.$this->title.' : '.Str::limit(request('search', ''), 50);
@@ -37,8 +38,8 @@ class UserController extends Controller
         return view('user.index', [
             'title' => $title,
             'user' => $user,
-            'status' => Status::values(),
-            'role' => Role::values(),
+            'status' => Status::options(),
+            'role' => Role::options(),
         ]);
     }
 
@@ -51,6 +52,9 @@ class UserController extends Controller
         return view('user.show', [
             'title' => 'Detail '.$this->title,
             'user' => $user,
+            'gender' => Gender::options(),
+            'status' => Status::options(),
+            'role' => Role::options(),
         ]);
     }
 
@@ -63,8 +67,9 @@ class UserController extends Controller
         return view('user.edit', [
             'title' => 'Edit '.$this->title,
             'user' => $user,
-            'status' => Status::values(),
-            'role' => Role::values(),
+            'gender' => Gender::options(),
+            'status' => Status::options(),
+            'role' => Role::options(),
         ]);
     }
 
@@ -91,6 +96,7 @@ class UserController extends Controller
         return view('user.profile', [
             'title' => 'Profil',
             'user' => $user,
+            'gender' => Gender::options(),
         ]);
     }
 

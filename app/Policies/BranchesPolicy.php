@@ -9,12 +9,12 @@ class BranchesPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'user'], true);
     }
 
     public function view(User $user, Branches $branches): bool
     {
-        return $user->role === 'admin';
+        return in_array($user->role, ['admin', 'user'], true);
     }
 
     public function create(User $user): bool
@@ -28,6 +28,11 @@ class BranchesPolicy
     }
 
     public function delete(User $user, Branches $branches): bool
+    {
+        return $user->role === 'admin';
+    }
+    
+    public function export(User $user): bool
     {
         return $user->role === 'admin';
     }

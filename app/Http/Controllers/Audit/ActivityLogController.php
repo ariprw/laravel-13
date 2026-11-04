@@ -12,7 +12,7 @@ class ActivityLogController extends Controller
     public function __construct(
         protected ActivityLogService $activityLogService
     ) {
-        $this->title = 'Log Aktivitas';
+        $this->title = $this->activityLogService->title;
     }
 
     public function index()

@@ -46,6 +46,6 @@
         </p>
     </div>
     
-    <x-form.submit/>
+    <x-js.submit/>
 
 @endsection

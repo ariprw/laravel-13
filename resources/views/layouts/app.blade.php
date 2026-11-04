@@ -16,125 +16,11 @@
 
 <body class="font-google-sans-flex">
 @php
-$menu = [
-    'admin' => [
-        [
-            'label' => 'Dashboard',
-            'icon' => 'house',
-            'route' => 'dashboard',
-        ],
-        [
-            'type' => 'divider',
-        ],
-        [
-            'label' => 'Daftar User',
-            'icon' => 'users-round',
-            'route' => 'user.index',
-        ],
-        [
-            'label' => 'Cabang',
-            'icon' => 'building-complex',
-            'route' => 'branches.index',
-        ],
-        [
-            'type' => 'divider',
-        ],
-        [
-            'label' => 'Log Aktivitas',
-            'icon' => 'logs',
-            'route' => 'activity.log.index',
-        ],
-        [
-            'type' => 'divider',
-        ],
-        [
-            'label' => 'Profil',
-            'icon' => 'user-round',
-            'route' => 'user.profile',
-        ],
-        [
-            'label' => 'Kata Sandi',
-            'icon' => 'key-round',
-            'route' => 'user.password',
-        ],
-        [
-            'label' => 'Keluar',
-            'icon' => 'log-out',
-            'route' => 'logout',
-        ],
-    ],
+    $auth = auth()->user();
+    $role = $auth?->role ?? 'default';
+    $name = $auth?->name ?? '';
 
-    'user' => [
-        [
-            'label' => 'Dashboard',
-            'icon' => 'house',
-            'route' => 'dashboard',
-        ],
-        [
-            'type' => 'divider',
-        ],
-        [
-            'label' => 'Profil',
-            'icon' => 'user-round',
-            'route' => 'user.profile',
-        ],
-        [
-            'label' => 'Kata Sandi',
-            'icon' => 'key-round',
-            'route' => 'user.password',
-        ],
-        [
-            'label' => 'Keluar',
-            'icon' => 'log-out',
-            'route' => 'logout',
-        ],
-    ],
-
-    'karyawan' => [
-        [
-            'label' => 'Dashboard',
-            'icon' => 'house',
-            'route' => 'dashboard',
-        ],
-        [
-            'type' => 'divider',
-        ],
-        [
-            'label' => 'Profil',
-            'icon' => 'user-round',
-            'route' => 'user.profile',
-        ],
-        [
-            'label' => 'Kata Sandi',
-            'icon' => 'key-round',
-            'route' => 'user.password',
-        ],
-        [
-            'label' => 'Keluar',
-            'icon' => 'log-out',
-            'route' => 'logout',
-        ],
-    ],
-
-    'default' => [
-        [
-            'label' => 'Dashboard',
-            'icon' => 'house',
-            'route' => 'dashboard',
-        ],
-        [
-            'label' => 'Keluar',
-            'icon' => 'log-out',
-            'route' => 'logout',
-        ],
-    ],
-];
-
-$auth = auth()->user();
-$role = $auth?->role ?? 'default';
-$name = $auth?->name ?? '';
-
-$menus = $menu[$role] ?? $menu['default'];
+    $menus = config("menu.{$role}", config('menu.default'));
 @endphp
 
 <div class="min-h-screen bg-slate-50">
@@ -159,7 +45,7 @@ $menus = $menu[$role] ?? $menu['default'];
                         <div class="sidebarDivider my-3 border-b border-b-solid border-gray-200"></div>
                     @else
                         <a href="{{ route($item['route']) }}" class="sidebarMenuItem flex items-center gap-3 my-1 px-3 py-2 rounded-xl {{ request()->routeIs($item['route']) ? 'bg-slate-100' : '' }} hover:bg-slate-100 text-sm">
-                            {!! ic($item['icon'], 'w-5 h-5 shrink-0') !!}
+                            <i data-lucide="{{ $item['icon'] }}" class="w-5 h-5 shrink-0"></i>
 
                             <span>{{ $item['label'] }}</span>
                         </a>
@@ -196,6 +82,7 @@ $menus = $menu[$role] ?? $menu['default'];
     </div>
 </div>
 
+<script src="{{ asset('/js/lucide.min.js') }}"></script>
 <script>
     const menuButton = document.querySelector('.menuButton');
     const sidebar = document.querySelector('.sidebar');
@@ -263,6 +150,8 @@ $menus = $menu[$role] ?? $menu['default'];
             sidebarSearch.blur();
         }
     });
+    
+    lucide.createIcons();
 </script>
 </body>
 </html>

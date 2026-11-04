@@ -1,3 +1,4 @@
+@once
 <script>
     document.querySelectorAll('.formSubmit').forEach(form => {
         form.addEventListener('submit', function () {
@@ -10,3 +11,4 @@
         });
     });
 </script>
+@endonce

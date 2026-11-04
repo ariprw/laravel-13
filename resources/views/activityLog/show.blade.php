@@ -29,15 +29,15 @@
             {{ $activityLog->description }}
         </x-show.row>
 
-        <x-show.row label="ID Subjek">
+        <x-show.row label="ID Objek">
             {{ $activityLog->subject_id }}
         </x-show.row>
 
-        <x-show.row label="Tipe Subjek">
+        <x-show.row label="Tipe Objek">
             {{ class_basename($activityLog->subject_type) }}
         </x-show.row>
 
-        <x-show.row label="Subjek">
+        <x-show.row label="Objek">
             {{ $subjectName }}
         </x-show.row>
 
@@ -79,7 +79,7 @@
                 @endforeach
             @else
                 <x-show.row label="{{ $keys }}" class="{{ $loop->last ? 'border-b-none' : '' }}">
-                    {{ $items }}
+                    {{ is_scalar($items) ? $items : json_encode($items) }}
                 </x-show.row>
             @endif
         </x-show.card>

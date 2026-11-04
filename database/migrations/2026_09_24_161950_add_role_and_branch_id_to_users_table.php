@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role')
-                ->default('karyawan')
+                ->default('employee')
                 ->index();
 
             $table->foreignUuid('branch_id')

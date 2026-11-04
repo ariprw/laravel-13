@@ -125,5 +125,8 @@ return [
     
     'password_pepper' => env('PASSWORD_PEPPER'),
     'password_pepper_split' => env('PASSWORD_PEPPER_SPLIT', '5,20'),
+    
+    'token_pepper' => env('TOKEN_PEPPER'),
+    'token_pepper_split' => env('TOKEN_PEPPER_SPLIT', '10,30'),
 
 ];

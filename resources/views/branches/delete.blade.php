@@ -17,7 +17,7 @@
         <div class="grid gap-4">
             <x-form.row-read-only label="ID">{{ $branches->id }}</x-form.row-read-only>
             <x-form.row-read-only label="Nama">{{ $branches->name }}</x-form.row-read-only>
-            <x-form.row-read-only label="Status">{{ collect($status)->firstWhere('value', $branches->is_active)['label'] ?? '' }}</x-form.row-read-only>
+            <x-form.row-read-only label="Status">{{ collect($status)->firstWhere('value', $branches->status)['label'] ?? '' }}</x-form.row-read-only>
 
             <x-form.row-input class="text-red-600" label="" type="hidden" name="approval" value="{{ $delete }}" read-only/>
         </div>
@@ -32,6 +32,6 @@
     </x-show.actions>
 </form>
 
-<x-form.submit/>
+<x-js.submit/>
 
 @endsection

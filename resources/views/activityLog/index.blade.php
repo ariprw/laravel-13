@@ -22,6 +22,12 @@
                 <div>
                     <x-link-button href="{{ route('activity.log.index') }}">Kembali</x-link-button>
                 </div>
+            @else
+                <div>
+                    @can('export', App\Models\ActivityLog::class)
+                        <x-link-button href="{{ route('activity.log.export') }}" variant="primary">Export</x-link-button>
+                    @endcan
+                </div>
             @endif
         </div>
 
@@ -75,9 +81,9 @@
 
                         @case(3)
                             <span class="col-span-6">
-                                <x-show.option
-                                    :detail="route('activity.log.show', $item->id)"
-                                />
+                                @can('view', $item)
+                                    <x-show.option :detail="route('activity.log.show', $item->id)" />
+                                @endcan
                             </span>
                             @break
                     @endswitch
@@ -90,7 +96,5 @@
 
     <x-show.pagination :data="$activityLog" />
 </x-show.card>
-
-{!! customSelect() !!}
 
 @endsection

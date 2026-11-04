@@ -30,7 +30,7 @@ class ForgotRequest extends FormRequest
                 'regex:/^[a-zA-Z0-9@._-]+$/',
                 Rule::exists('users', 'email')->where(function ($query) {
                     $query->whereNotNull('email_verified_at')
-                    ->where('status', 'aktif');
+                    ->where('status', 'active');
                 }),
             ],
         ];

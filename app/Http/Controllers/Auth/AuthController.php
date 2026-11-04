@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\ForgotRequest;
 use App\Http\Requests\Auth\ResetRequest;
 use App\Models\Auth;
 use App\Models\User;
+use App\Enums\User\Gender;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,8 @@ class AuthController extends Controller
         $this->authorize('register', Auth::class);
 
         return view('auth.register', [
-            'title' => 'Buat Akun'
+            'title' => 'Buat Akun',
+            'gender' => Gender::options(),
         ]);
     }
 
@@ -140,6 +142,7 @@ class AuthController extends Controller
 
         $user = $this->authService->login(
             $request->validated(),
+            $request,
         );
 
         if (! $user) {
@@ -147,10 +150,6 @@ class AuthController extends Controller
                 'email' => 'Email atau password salah',
             ])->withInput($request->only('email'));
         }
-
-        auth()->login($user);
-
-        $request->session()->regenerate();
 
         return redirect()->intended('/dashboard');
     }

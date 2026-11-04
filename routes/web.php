@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Branches\BranchesController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Export\ExportController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -17,11 +18,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
-    Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
-    Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::post('/user/{user}/edit', [UserController::class, 'update'])->name('user.update');
-    Route::get('/user/{user}/delete', [UserController::class, 'delete'])->name('user.delete');
-    Route::post('/user/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/user/{user}', [UserController::class, 'show'])->whereUuid('user')->name('user.show');
+    Route::get('/user/{user}/edit', [UserController::class, 'edit'])->whereUuid('user')->name('user.edit');
+    Route::post('/user/{user}/edit', [UserController::class, 'update'])->whereUuid('user')->name('user.update');
+    Route::get('/user/{user}/delete', [UserController::class, 'delete'])->whereUuid('user')->name('user.delete');
+    Route::post('/user/{user}/delete', [UserController::class, 'destroy'])->whereUuid('user')->name('user.destroy');
+    Route::get('/user/export', [ExportController::class, 'index'])->name('user.export');
 
     Route::get('/branches', [BranchesController::class, 'index'])->name('branches.index');
     Route::get('/branches/search', [BranchesController::class, 'search'])->name('branches.search');
@@ -32,15 +34,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/branches/{branches}/edit', [BranchesController::class, 'update'])->whereUuid('branches')->name('branches.update');
     Route::get('/branches/{branches}/delete', [BranchesController::class, 'delete'])->whereUuid('branches')->name('branches.delete');
     Route::post('/branches/{branches}/delete', [BranchesController::class, 'destroy'])->whereUuid('branches')->name('branches.destroy');
+    Route::get('/branches/export', [ExportController::class, 'index'])->name('branches.export');
 
     Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity.log.index');
-    Route::get('/activity-log/{activityLog}', [ActivityLogController::class, 'show'])->name('activity.log.show');
+    Route::get('/activity-log/{activityLog}', [ActivityLogController::class, 'show'])->whereUuid('activityLog')->name('activity.log.show');
+    Route::get('/activity-log/export', [ExportController::class, 'index'])->name('activity.log.export');
 
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::post('/profile', [UserController::class, 'profileUpdate'])->name('user.profile.update');
 
     Route::get('/change/password', [UserController::class, 'changePassword'])->name('user.password');
     Route::post('/change/password', [UserController::class, 'changePasswordUpdate'])->name('user.password.update');
+
+    Route::post('/export', [ExportController::class, 'store'])->name('export.store');
+    Route::post('/export/{requestId}/batch', [ExportController::class, 'batch'])->where('requestId', '[A-Za-z0-9]{48}')->name('export.batch');
+    Route::get('/export/{requestId}/download/{start}', [ExportController::class, 'download'])->where(['requestId' => '[A-Za-z0-9]{48}', 'start' => '[0-9]+'])->name('export.download');
+    Route::delete('/export/{requestId}/cleanup', [ExportController::class, 'cleanup'])->name('export.cleanup');
+    Route::get('/export/cleanups', [ExportController::class, 'cleanups'])->name('export.cleanups');
 });
 
 

@@ -7,6 +7,8 @@
     'maxlength' => 255,
     'value' => null,
     'placeholder' => null,
+    'datasetFormat' => null,
+    'datasetMaxWidth' => null,
 ])
 
 <div>
@@ -15,6 +17,8 @@
         @if (filled($name)) name="{{ $name }}" @endif
         type="{{ $type }}"
         maxlength="{{ $maxlength }}"
+        @if ($datasetFormat) data-format="{{ $datasetFormat }}" @endif
+        @if ($datasetMaxWidth) data-max-width="{{ $datasetMaxWidth }}" @endif
         @required($required)
         @if ($type !== 'password')
             value="{{ filled($name) ? old($name, $value) : $value }}"

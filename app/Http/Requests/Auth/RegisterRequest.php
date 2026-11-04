@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\User\Gender;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
@@ -15,6 +17,7 @@ class RegisterRequest extends FormRequest
     {
         $this->merge([
             'name' => ucwords($this->name),
+            'gender' => strtolower($this->gender),
             'email' => strtolower($this->email),
         ]);
     }
@@ -26,6 +29,10 @@ class RegisterRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
+            ],
+            'gender' => [
+                'required',
+                Rule::in(Gender::values()),
             ],
             'email' => [
                 'required',
