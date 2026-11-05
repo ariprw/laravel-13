@@ -19,7 +19,7 @@ class ActivityLogService
         $auth = auth()->user();
         $query = ActivityLog::query();
 
-        if ($auth->role != Role::ADMIN->value) {
+        if ($auth->role !== Role::ADMIN->value) {
             $query->where(function ($query) use ($auth) {
                 $query->where('user_id', $auth->id);
             });
@@ -60,7 +60,7 @@ class ActivityLogService
     {
         $query = ActivityLog::query()->with(ActivityLog::getWith());
 
-        if ($user?->role === Role::USER->value || $user?->role === Role::EMPLOYEE->value) {
+        if ($user->role !== Role::ADMIN->value) {
             $query->where('user_id', $user->id);
         }
 

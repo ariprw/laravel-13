@@ -3,6 +3,8 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use App\Enums\User\Role;
+use App\Enums\User\Status;
 use App\Services\Audit\ActivityLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,16 +21,16 @@ class AuthService
 
     public function register(array $data): User
     {
-        $fields = ['name', 'gender', 'email'];
+        $fields = ['name', 'gender', 'email', 'status', 'role'];
 
         $user = User::create([
             'name' => $data['name'],
             'gender' => $data['gender'],
             'email' => $data['email'],
             'password' => $this->passwordService->hash($data['password']),
+            'status' => Status::PENDING,
+            'role' => Role::EMPLOYEE,
         ]);
-
-        $user->sendEmailVerificationNotification();
 
         $this->activityLogService->record(
             description: 'Register user',
@@ -49,11 +51,11 @@ class AuthService
 
     public function resendVerification(array $data): void
     {
-        $fields = ['name', 'email', 'email_verified_at', 'status'];
+        $fields = ['name', 'email', 'email_verified_at', 'status', 'role'];
 
         $user = User::where('email', $data['email'])->first();
 
-        if (!$user || $user->hasVerifiedEmail()) {
+        if (! $user || $user->hasVerifiedEmail()) {
             return;
         }
 
@@ -70,7 +72,7 @@ class AuthService
 
     public function verify(string $id, string $hash): void
     {
-        $fields = ['name', 'email', 'email_verified_at'];
+        $fields = ['name', 'email', 'email_verified_at', 'status', 'role'];
 
         $user = User::find($id);
 
@@ -100,7 +102,7 @@ class AuthService
 
     public function forgot(array $data): ?User
     {
-        $fields = ['name', 'email', 'email_verified_at', 'status'];
+        $fields = ['name', 'email', 'email_verified_at', 'status', 'role'];
 
         $user = User::where('email', $data['email'])
         ->whereNotNull('email_verified_at')
@@ -128,7 +130,7 @@ class AuthService
 
     public function reset(array $data): ?User
     {
-        $fields = ['name', 'email', 'email_verified_at', 'status'];
+        $fields = ['name', 'email', 'email_verified_at', 'status', 'role'];
 
         $resetUser = null;
 
@@ -168,7 +170,7 @@ class AuthService
 
     public function login(array $data, Request $request): ?User
     {
-        $fields = ['name', 'email', 'status'];
+        $fields = ['name', 'email', 'status', 'role'];
 
         $user = User::where('email', $data['email'])->first();
 
@@ -180,7 +182,11 @@ class AuthService
             return null;
         }
 
-        if ($user->status !== 'active') {
+        if ($user->status !== Status::ACTIVE) {
+            return null;
+        }
+
+        if (! Role::tryFrom($user->getRawOriginal('role') ?? '')) {
             return null;
         }
 
@@ -208,7 +214,7 @@ class AuthService
         $user = Auth::user();
 
         if ($user) {
-            $fields = ['name', 'email', 'status'];
+            $fields = ['name', 'email', 'status', 'role'];
 
             $this->activityLogService->record(
                 description: 'Logout success',
