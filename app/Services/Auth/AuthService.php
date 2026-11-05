@@ -28,8 +28,8 @@ class AuthService
             'gender' => $data['gender'],
             'email' => $data['email'],
             'password' => $this->passwordService->hash($data['password']),
-            'status' => Status::PENDING,
-            'role' => Role::EMPLOYEE,
+            'status' => Status::PENDING->value,
+            'role' => Role::EMPLOYEE->value,
         ]);
 
         $this->activityLogService->record(
@@ -182,7 +182,7 @@ class AuthService
             return null;
         }
 
-        if ($user->status !== Status::ACTIVE) {
+        if ($user->status !== Status::ACTIVE->value) {
             return null;
         }
 
